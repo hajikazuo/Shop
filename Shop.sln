@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Api", "Shop.Api\Shop.Api.csproj", "{BAF3DEFE-8566-47E2-A575-FB244C73B2D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Api", "Shop.Api\Shop.Api.csproj", "{BAF3DEFE-8566-47E2-A575-FB244C73B2D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Common", "Shop.Common\Shop.Common.csproj", "{91F10E2C-FEEB-4560-AA1D-048ECD49927B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Common", "Shop.Common\Shop.Common.csproj", "{91F10E2C-FEEB-4560-AA1D-048ECD49927B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Blazor", "Shop.Blazor\Shop.Blazor.csproj", "{9E4315CD-BE74-45FF-8DF5-369EC74F4D44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{91F10E2C-FEEB-4560-AA1D-048ECD49927B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91F10E2C-FEEB-4560-AA1D-048ECD49927B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91F10E2C-FEEB-4560-AA1D-048ECD49927B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4315CD-BE74-45FF-8DF5-369EC74F4D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4315CD-BE74-45FF-8DF5-369EC74F4D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4315CD-BE74-45FF-8DF5-369EC74F4D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4315CD-BE74-45FF-8DF5-369EC74F4D44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
