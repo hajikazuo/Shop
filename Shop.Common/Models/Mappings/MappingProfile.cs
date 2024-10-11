@@ -19,7 +19,7 @@ namespace Shop.Common.Models.Mappings
             CreateMap<CategoryDto, Category>();
             CreateMap<UpdateCategoryDto, Category>();
 
-            CreateMap<Product, ProductDto>();
+            CreateMap<Product, ProductDto>().ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category));
             CreateMap<ProductDto, Product>();
             CreateMap<UpdateProductDto, Product>();
         }

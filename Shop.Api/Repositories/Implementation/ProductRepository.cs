@@ -16,7 +16,7 @@ namespace Shop.Api.Repositories.Implementation
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.Include(c => c.Category).ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(Guid id)

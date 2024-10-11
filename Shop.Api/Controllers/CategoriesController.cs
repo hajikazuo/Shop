@@ -50,7 +50,7 @@ namespace Shop.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategory(CategoryDto request)
         {
             var category = _mapper.Map<Category>(request);

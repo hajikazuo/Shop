@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shop.Common.Models.DTO.Category;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,6 @@ namespace Shop.Common.Models.DTO.Product
         public string? Description { get; set; }
         public long Stock { get; set; }
         public string? ImageURL { get; set; }
-        public Guid CategoryId { get; set; }
+        public CategoryDto? Category { get; set; }
     }
 }
