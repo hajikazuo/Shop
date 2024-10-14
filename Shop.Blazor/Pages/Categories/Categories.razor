@@ -1,6 +1,7 @@
 ﻿﻿
 @page "/categories"
 @inject ICategoryService _categoryService   
+@inject NavigationManager NavigationManager
 
 <h3>Categories</h3>
 
@@ -45,9 +46,9 @@ else
         {
             categories = await _categoryService.GetCategoriesAsync();
         }
-        catch (Exception ex)
+        catch (UnauthorizedAccessException)
         {
-            errorMessage = ex.Message;
+            NavigationManager.NavigateTo("notauthorized");
         }
     }
 }

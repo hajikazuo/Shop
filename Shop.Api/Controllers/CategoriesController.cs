@@ -24,6 +24,7 @@ namespace Shop.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoryRepository.GetCategoriesAsync();
