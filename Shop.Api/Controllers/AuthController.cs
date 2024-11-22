@@ -62,7 +62,7 @@ namespace Shop.Api.Controllers
 
             if (identityResult.Succeeded)
             {
-                identityResult = await _userManager.AddToRoleAsync(user, "Reader");
+                identityResult = await _userManager.AddToRoleAsync(user, "Client");
 
                 if (identityResult.Succeeded)
                 {
