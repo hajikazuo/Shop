@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Common.Models.DTO.Category
 {
-    public class CategoryDto
+    public class CategoryResponseDto
     {
         public Guid CategoryId { get; set; }
         public string? Name { get; set; }

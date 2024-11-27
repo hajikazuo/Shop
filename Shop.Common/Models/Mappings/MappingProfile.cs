@@ -15,17 +15,16 @@ namespace Shop.Common.Models.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Category, CategoryDto>();
-            CreateMap<CategoryDto, Category>();
-            CreateMap<UpdateCategoryDto, Category>();
+            CreateMap<Category, CategoryResponseDto>().ReverseMap();
+            CreateMap<CategoryRequestDto, Category>().ReverseMap();
 
-            CreateMap<Product, ProductDto>()
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category)) 
-                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId)); 
-            CreateMap<ProductDto, Product>()
-                .ForMember(dest => dest.Category, opt => opt.Ignore()) 
-                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId)); 
-            CreateMap<UpdateProductDto, Product>();
+            CreateMap<Product, ProductResponseDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
+                .ReverseMap()
+                .ForMember(dest => dest.Category, opt => opt.Ignore());
+
+            CreateMap<ProductRequestDto, Product>().ReverseMap();
         }
     }
 }

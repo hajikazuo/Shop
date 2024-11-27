@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shop.Common.Models.DTO.Category;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Common.Models.DTO.Product
 {
-    public class UpdateProductDto
+    public class ProductRequestDto
     {
         public string? Name { get; set; }
         public decimal Price { get; set; }

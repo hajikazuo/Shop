@@ -24,12 +24,12 @@ namespace Shop.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllCategories()
         {
             var categories = await _categoryRepository.GetCategoriesAsync();
 
-            var response = _mapper.Map<List<CategoryDto>>(categories);
+            var response = _mapper.Map<List<CategoryResponseDto>>(categories);
 
             return Ok(response);
         }
@@ -45,27 +45,26 @@ namespace Shop.Api.Controllers
                 return NotFound();
             }
 
-            var response = _mapper.Map<CategoryDto>(existingCategory);
+            var response = _mapper.Map<CategoryResponseDto>(existingCategory);
 
             return Ok(response);
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateCategory(CategoryDto request)
+        public async Task<IActionResult> CreateCategory(CategoryRequestDto request)
         {
             var category = _mapper.Map<Category>(request);
             category.CategoryId = _comb.Create();
 
             await _categoryRepository.CreateCategoryAsync(category);
 
-            var response = _mapper.Map<CategoryDto>(category); 
+            var response = _mapper.Map<CategoryResponseDto>(category); 
             return Ok(response);
         }
 
         [HttpPut]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, UpdateCategoryDto request)
+        public async Task<IActionResult> UpdateCategory([FromRoute] Guid id, CategoryRequestDto request)
         {
             var category = _mapper.Map<Category>(request); 
             category.CategoryId = id;
@@ -77,7 +76,7 @@ namespace Shop.Api.Controllers
                 return NotFound();
             }
 
-            var response = _mapper.Map<CategoryDto>(updatedCategory); 
+            var response = _mapper.Map<CategoryResponseDto>(updatedCategory); 
             return Ok(response);
         }
 
@@ -92,7 +91,7 @@ namespace Shop.Api.Controllers
                 return NotFound();
             }
 
-            var response = _mapper.Map<CategoryDto>(category);
+            var response = _mapper.Map<CategoryResponseDto>(category);
 
             return Ok(response);
         }

@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Shop.Api.Repositories.Implementation;
 using Shop.Api.Repositories.Interfaces;
+using Shop.Api.Services.Implementation;
+using Shop.Api.Services.Interface;
 using Shop.Common.Context;
 using Shop.Common.Models.Mappings;
 using System.Text;
@@ -68,8 +70,11 @@ namespace Shop.Api
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<IBasketService, BasketService>();
             builder.Services.AddSingleton(RT.Comb.Provider.Sql);
             builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+            builder.Services.AddHttpContextAccessor();
 
 
             builder.Services.AddIdentityCore<IdentityUser>()

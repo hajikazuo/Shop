@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Common.Models.DTO.Product
 {
-    public class ProductDto
+    public class ProductResponseDto
     {
         public Guid ProductId { get; set; }
         public string? Name { get; set; }
@@ -16,6 +16,6 @@ namespace Shop.Common.Models.DTO.Product
         public long Stock { get; set; }
         public string? ImageURL { get; set; }
         public Guid CategoryId { get; set; }
-        public CategoryDto? Category { get; set; }
+        public CategoryResponseDto? Category { get; set; }
     }
 }

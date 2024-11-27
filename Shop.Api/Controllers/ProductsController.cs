@@ -30,7 +30,7 @@ namespace Shop.Api.Controllers
         {
             var products = await _productRepository.GetProductsAsync();
 
-            var response = _mapper.Map<List<ProductDto>>(products);
+            var response = _mapper.Map<List<ProductResponseDto>>(products);
 
             return Ok(response);
         }
@@ -46,27 +46,27 @@ namespace Shop.Api.Controllers
                 return NotFound();
             }
 
-            var response = _mapper.Map<ProductDto>(existingProduct);
+            var response = _mapper.Map<ProductResponseDto>(existingProduct);
 
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(ProductDto request)
+        public async Task<ActionResult> CreateProduct(ProductRequestDto request)
         {
             var product = _mapper.Map<Product>(request);
             product.ProductId = _comb.Create();
 
             await _productRepository.CreateProductAsync(product);
 
-            var response = _mapper.Map<ProductDto>(product);
+            var response = _mapper.Map<ProductResponseDto>(product);
 
             return Ok(response);
         }
 
         [HttpPut]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, UpdateProductDto request)
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, ProductRequestDto request)
         {
             var product = _mapper.Map<Product>(request);
             product.ProductId = id;
@@ -78,7 +78,7 @@ namespace Shop.Api.Controllers
                 return NotFound();
             }
 
-            var response = _mapper.Map<ProductDto>(updatedProduct);
+            var response = _mapper.Map<ProductResponseDto>(updatedProduct);
             return Ok(response);
         }
 
@@ -93,7 +93,7 @@ namespace Shop.Api.Controllers
                 return NotFound();
             }
 
-            var response = _mapper.Map<ProductDto>(product);
+            var response = _mapper.Map<ProductResponseDto>(product);
 
             return Ok(response);
         }
