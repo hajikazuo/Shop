@@ -1,6 +1,4 @@
-## Api de testes 
-
-### Alguns conhecimentos utilizados: 
+### Stack: 
 
 - Identity
 - SqlServer
