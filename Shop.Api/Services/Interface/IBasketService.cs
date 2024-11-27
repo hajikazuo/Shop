@@ -6,6 +6,6 @@ namespace Shop.Api.Services.Interface
     {
         Basket GetBasket();
         void AddToBasket(Guid productId, int quantity);
-        void RemoveFromBasket(Guid productId);
+        void RemoveFromBasket(Guid productId, int quantity);
     }
 }

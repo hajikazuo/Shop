@@ -8,6 +8,7 @@ using Shop.Api.Repositories.Interfaces;
 using Shop.Api.Services.Implementation;
 using Shop.Api.Services.Interface;
 using Shop.Common.Context;
+using Shop.Common.Models.Entities.Users;
 using Shop.Common.Models.Mappings;
 using System.Text;
 
@@ -69,17 +70,20 @@ namespace Shop.Api
 
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+
             builder.Services.AddScoped<IBasketService, BasketService>();
+            builder.Services.AddScoped<ISeedService, SeedService>();
+
             builder.Services.AddSingleton(RT.Comb.Provider.Sql);
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             builder.Services.AddHttpContextAccessor();
 
 
-            builder.Services.AddIdentityCore<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("ShopApi")
+            builder.Services.AddIdentityCore<User>()
+                .AddRoles<Role>()
+                .AddTokenProvider<DataProtectorTokenProvider<User>>("ShopApi")
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -126,9 +130,14 @@ namespace Shop.Api
 
             app.UseCors();
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var seedUserService = scope.ServiceProvider.GetRequiredService<ISeedService>();
+                seedUserService.Seed();
+            }
 
             app.MapControllers();
 

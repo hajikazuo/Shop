@@ -30,9 +30,9 @@ namespace Shop.Api.Controllers
         }
 
         [HttpDelete("remove/{productId}")]
-        public IActionResult RemoveFromBasket(Guid productId)
+        public IActionResult RemoveFromBasket(Guid productId, int quantity)
         {
-            _basketService.RemoveFromBasket(productId);
+            _basketService.RemoveFromBasket(productId, quantity);
             return NoContent();
         }
     }

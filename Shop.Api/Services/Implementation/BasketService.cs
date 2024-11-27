@@ -61,13 +61,19 @@ namespace Shop.Api.Services.Implementation
             });
         }
 
-        public void RemoveFromBasket(Guid productId)
+        public void RemoveFromBasket(Guid productId, int quantity)
         {
             var basket = GetBasket();
             var item = basket.Items.FirstOrDefault(item => item.ProductId == productId);
             if (item != null)
             {
-                basket.Items.Remove(item);
+                item.Quantity -= quantity;
+
+                if (item.Quantity <= 0)
+                {
+                    basket.Items.Remove(item);
+                }
+
                 var basketJson = JsonConvert.SerializeObject(basket);
                 _httpContextAccessor.HttpContext.Response.Cookies.Append("basket", basketJson, new CookieOptions
                 {

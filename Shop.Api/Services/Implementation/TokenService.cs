@@ -1,21 +1,22 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Shop.Api.Repositories.Interfaces;
+using Shop.Api.Services.Interface;
+using Shop.Common.Models.Entities.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Shop.Api.Repositories.Implementation
+namespace Shop.Api.Services.Implementation
 {
-    public class TokenRepository : ITokenRepository
+    public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
 
-        public TokenRepository(IConfiguration configuration)
+        public TokenService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public string CreateJwtToken(IdentityUser user, IList<string> roles)
+        public string CreateJwtToken(User user, IList<string> roles)
         {
             var claims = new List<Claim>
             {

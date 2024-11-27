@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Shop.Api.Repositories.Interfaces;
+using Shop.Api.Services.Interface;
 using Shop.Common.Models.DTO.Auth;
+using Shop.Common.Models.Entities.Users;
 
 namespace Shop.Api.Controllers
 {
@@ -10,10 +11,10 @@ namespace Shop.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ITokenRepository _tokenRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly ITokenService _tokenRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
+        public AuthController(UserManager<User> userManager, ITokenService tokenRepository)
         {
             _userManager = userManager;
             _tokenRepository = tokenRepository;
@@ -52,7 +53,7 @@ namespace Shop.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
         {
-            var user = new IdentityUser
+            var user = new User
             {
                 UserName = request.Email?.Trim(),
                 Email = request.Email?.Trim()
