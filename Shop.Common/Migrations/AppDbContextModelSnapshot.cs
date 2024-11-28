@@ -168,7 +168,7 @@ namespace Shop.Common.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("OrderId")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Price")
@@ -386,17 +386,17 @@ namespace Shop.Common.Migrations
 
             modelBuilder.Entity("Shop.Common.Models.Entities.OrderItem", b =>
                 {
-                    b.HasOne("Shop.Common.Models.Entities.Order", "Order")
+                    b.HasOne("Shop.Common.Models.Entities.Order", null)
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Shop.Common.Models.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });

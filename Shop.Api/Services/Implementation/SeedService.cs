@@ -35,7 +35,7 @@ namespace Shop.Api.Services.Implementation
             CreateUser("admin@shop.com", "Admin", "Test@2024!", roles: new List<string> { ClientRole, VendorRole, AdminRole }).GetAwaiter().GetResult();
 
             CreateCategory().GetAwaiter().GetResult();
-            CreateProduct().GetAwaiter().GetResult();
+            CreateProducts().GetAwaiter().GetResult();
         }
 
         private async Task<IdentityResult> CreateRole(string roleName)
@@ -94,25 +94,49 @@ namespace Shop.Api.Services.Implementation
             }
         }
 
-        private async Task CreateProduct()
+        private async Task CreateProducts()
         {
             var exists = await _context.Products.AnyAsync();
-            if (exists != true)
+            if (!exists)
             {
-                var entity = new Product
+                var products = new List<Product>
                 {
-                    ProductId = Guid.NewGuid(), 
-                    Name = "Smartphone Galaxy S23",  
-                    Price = 4999.99m,  
-                    Description = "Smartphone Galaxy S23 com tela de 6.1 polegadas, 128GB de armazenamento, 8GB de RAM, câmera de 50MP e processador Snapdragon 8 Gen 2.",  // Descrição do smartphone
-                    Stock = 100,  
-                    ImageURL = "smartphone-galaxy-s23.jpg",
-                    CategoryId = CategoryId,
+                    new Product
+                    {
+                        ProductId = Guid.NewGuid(),
+                        Name = "Smartphone Galaxy S23",
+                        Price = 4999.99m,
+                        Description = "Smartphone Galaxy S23 com tela de 6.1 polegadas, 128GB de armazenamento, 8GB de RAM, câmera de 50MP e processador Snapdragon 8 Gen 2.",
+                        Stock = 100,
+                        ImageURL = "smartphone-galaxy-s23.jpg",
+                        CategoryId = CategoryId,
+                    },
+                    new Product
+                    {
+                        ProductId = Guid.NewGuid(),
+                        Name = "iPhone 14 Pro Max",
+                        Price = 7999.99m,
+                        Description = "iPhone 14 Pro Max com tela Super Retina XDR de 6.7 polegadas, 256GB de armazenamento, câmera tripla de 48MP, e chip A16 Bionic.",
+                        Stock = 50,
+                        ImageURL = "iphone-14-pro-max.jpg",
+                        CategoryId = CategoryId,
+                    },
+                    new Product
+                    {
+                        ProductId = Guid.NewGuid(),
+                        Name = "Xiaomi 13 Ultra",
+                        Price = 5999.99m,
+                        Description = "Xiaomi 13 Ultra com tela AMOLED de 6.73 polegadas, 512GB de armazenamento, câmera Leica de 50MP e processador Snapdragon 8 Gen 2.",
+                        Stock = 75,
+                        ImageURL = "xiaomi-13-ultra.jpg",
+                        CategoryId = CategoryId,
+                    }
                 };
-                _context.Products?.Add(entity);
+
+                await _context.Products.AddRangeAsync(products);
                 await _context.SaveChangesAsync();
             }
-
         }
+
     }
 }
