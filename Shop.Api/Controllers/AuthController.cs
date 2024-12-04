@@ -39,7 +39,8 @@ namespace Shop.Api.Controllers
                     {
                         Email = identityUser.Email,
                         Roles = roles.ToList(),
-                        Token = jwtToken
+                        Token = jwtToken.Token,
+                        Expiration = jwtToken.Expiration    
                     };
 
                     return Ok(response);

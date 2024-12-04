@@ -1,0 +1,47 @@
+﻿@page "/category/edit/{categoryId:guid}"
+@using Shop.Common.Models.DTO.Category
+@inject NavigationManager navigation
+
+@inject ICategoryService _categoryService
+
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Cadastrar categoria</h4>
+                </div>
+
+                <CategoryForm Category="@category" OnValidSubmit="EditCategory"
+                              ButtonTextCancel="Cancelar"
+                              ButtonTextSubmit="Salvar">
+                </CategoryForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private CategoryRequestDto category = new CategoryRequestDto();
+
+    [Parameter]
+    public Guid categoryId { get; set; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var categoryResponse = await _categoryService.GetCategory(categoryId);
+
+        category = new CategoryRequestDto
+        {
+           Name = categoryResponse.Name
+        };
+    }
+
+    async Task EditCategory()
+    {
+        await _categoryService.UpdateCategory(categoryId, category);
+        navigation.NavigateTo("categories");
+    }
+}

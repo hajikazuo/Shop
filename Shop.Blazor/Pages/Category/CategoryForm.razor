@@ -1,0 +1,46 @@
+﻿@using Shop.Common.Models.DTO.Category
+
+<EditForm Model="@Category" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="card-body">
+        <div class="row g-5">
+            <div class="col-4 mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <InputText id="name" @bind-Value="Category.Name" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+        <div class="d-flex">
+            <button type="submit" class="btn btn-primary">
+                @ButtonTextSubmit
+            </button>
+            <button class="btn btn-link"
+                    @onclick="@(()=> navigation.NavigateTo("Categories"))">
+                @ButtonTextCancel
+            </button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Inject]
+    private NavigationManager? navigation { get; set; }
+
+
+    [Parameter]
+    public CategoryRequestDto? Category { get; set; }
+
+    [Parameter]
+    public string ButtonTextSubmit { get; set; } = "Salvar";
+
+    [Parameter]
+    public string ButtonTextCancel { get; set; } = "Cancelar";
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    public string? ImagemRemota { get; set; }
+}

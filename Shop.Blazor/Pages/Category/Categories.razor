@@ -1,0 +1,75 @@
+﻿@page "/categories"
+@using Shop.Common.Models.DTO.Category
+@inject ICategoryService _categoryService
+@inject NavigationManager NavigationManager
+
+<div class="container-xl">
+    <div class="mb-3">
+        <a href="/categories/create" class="btn btn-primary d-none d-sm-inline-block">
+            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+            Cadastrar
+        </a>
+    </div>
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Categorias</h4>
+                </div>
+                <div class="card-body">
+                    @if (categories is not null)
+                    {
+                        <div id="table-default" class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Id
+                                        </th>
+                                        <th>
+                                            Nome
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in categories)
+                                    {
+                                        <tr>
+                                            <td>@item.CategoryId</td>
+                                            <td>@item.Name</td>
+                                            <td>
+                                                <div class="btn-list flex-column-nowrap">
+                                                    <a href="category/edit/@item.CategoryId" class="btn">Editar</a>
+                                                    <a href="" class="btn">Deletar</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<CategoryResponseDto> categories =
+                       new List<CategoryResponseDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            categories = await _categoryService.GetCategories();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            NavigationManager.NavigateTo("notauthorized");
+        }
+    }
+}

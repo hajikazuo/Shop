@@ -1,0 +1,34 @@
+﻿@page "/categories/create"
+@using Shop.Common.Models.DTO.Category
+@inject NavigationManager navigation
+
+@inject ICategoryService _categoryService
+
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Cadastrar categoria</h4>
+                </div>
+
+                <CategoryForm Category="@category" OnValidSubmit="CreateCategory"
+                              ButtonTextCancel="Cancelar"
+                              ButtonTextSubmit="Salvar">
+                </CategoryForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private CategoryRequestDto category = new CategoryRequestDto();
+
+    async Task CreateCategory()
+    {
+        await _categoryService.CreateCategory(category);
+        navigation.NavigateTo("categories");
+    }
+}

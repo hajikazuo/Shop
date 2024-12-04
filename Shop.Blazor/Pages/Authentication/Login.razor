@@ -1,0 +1,41 @@
+﻿﻿
+@page "/login"
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Credenciais</h5>
+        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group mt-2">
+                <label for="email">Email</label>
+                <InputText Id="email" Class="form-control" @bind-Value="loginModel.Email" />
+                <ValidationMessage For="@(() => loginModel.Email)" />
+            </div>
+            <div class="form-group mt-2">
+                <label for="password">Password</label>
+                <InputText Id="password" type="password" Class="form-control"
+                           @bind-Value="loginModel.Password" />
+                <ValidationMessage For="@(() => loginModel.Password)" />
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Enviar</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private async Task HandleLogin()
+    {
+        var result = await AuthService.Login(loginModel);
+
+        if (result.Token is not null)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}
