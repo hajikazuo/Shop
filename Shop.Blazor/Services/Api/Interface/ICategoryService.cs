@@ -4,9 +4,10 @@ namespace Shop.Blazor.Services.Api.Interface
 {
     public interface ICategoryService
     {
-        Task<List<CategoryResponseDto>> GetCategories();
-        Task<CategoryResponseDto> GetCategory(Guid id);
-        Task<CategoryResponseDto> CreateCategory(CategoryRequestDto categoryDto);
-        Task<CategoryResponseDto> UpdateCategory(Guid id, CategoryRequestDto categoryDto);
+        Task<List<CategoryResponseDto>> GetAll();
+        Task<CategoryResponseDto> GetById(Guid id);
+        Task<CategoryResponseDto> Create(CategoryRequestDto categoryDto);
+        Task<CategoryResponseDto> Update(Guid id, CategoryRequestDto categoryDto);
+        Task<bool> Delete(Guid id);
     }
 }

@@ -42,7 +42,7 @@
                                             <td>
                                                 <div class="btn-list flex-column-nowrap">
                                                     <a href="category/edit/@item.CategoryId" class="btn">Editar</a>
-                                                    <a href="" class="btn">Deletar</a>
+                                                    <a class="btn" @onclick="@(()=> Delete(item.CategoryId))">Deletar</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -57,15 +57,48 @@
     </div>
 </div>
 
+<Modal @ref="confirm" onCancel="CancelConfirm" onConfirm="DeleteConfirm">
+    <div>Deseja realmente excluir este item ?</div>
+</Modal>
+
 @code {
     private IEnumerable<CategoryResponseDto> categories =
                        new List<CategoryResponseDto>();
+
+    Modal? confirm;
+
+    Guid categoryCode;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            categories = await _categoryService.GetCategories();
+            categories = await _categoryService.GetAll();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            NavigationManager.NavigateTo("notauthorized");
+        }
+    }
+
+    void Delete(Guid categoryId)
+    {
+        confirm.Show();
+        categoryCode = categoryId;
+    }
+
+    void CancelConfirm()
+    {
+        confirm.Hide();
+    }
+
+    async Task DeleteConfirm()
+    {
+        try
+        {
+            await _categoryService.Delete(categoryCode);
+            categories = await _categoryService.GetAll();
+            confirm.Hide();
         }
         catch (UnauthorizedAccessException)
         {

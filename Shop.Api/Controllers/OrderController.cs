@@ -54,6 +54,8 @@ namespace Shop.Api.Controllers
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
 
+            _basketService.ClearBasket();
+
             return Ok(order);
         }
     }

@@ -1,4 +1,5 @@
-﻿@using Shop.Blazor.Pages.Category
+﻿@using Shop.Blazor.Pages.Authentication
+@using Shop.Blazor.Pages.Category
 <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
     <div class="container-xl">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,7 +116,7 @@
                     <a href="#" class="dropdown-item">Feedback</a>
                     <div class="dropdown-divider"></div>
                     <a href="./settings.html" class="dropdown-item">Settings</a>
-                    <a href="./sign-in.html" class="dropdown-item">Logout</a>
+                    <LoginDisplay />
                 </div>
             </div>
         </div>

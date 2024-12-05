@@ -27,7 +27,7 @@ namespace Shop.Blazor.Services.Api.Implementation
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task<List<CategoryResponseDto>> GetCategories()
+        public async Task<List<CategoryResponseDto>> GetAll()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Shop.Blazor.Services.Api.Implementation
             }
         }
 
-        public async Task<CategoryResponseDto> GetCategory(Guid id)
+        public async Task<CategoryResponseDto> GetById(Guid id)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Shop.Blazor.Services.Api.Implementation
             }
         }
 
-        public async Task<CategoryResponseDto> CreateCategory(CategoryRequestDto categoryDto)
+        public async Task<CategoryResponseDto> Create(CategoryRequestDto categoryDto)
         {
             var httpClient = _httpClientFactory.CreateClient("Shop.Api");
             StringContent content = new StringContent(JsonSerializer.Serialize(categoryDto),
@@ -97,7 +97,7 @@ namespace Shop.Blazor.Services.Api.Implementation
 
         }
 
-        public async Task<CategoryResponseDto> UpdateCategory(Guid id, CategoryRequestDto categoryDto)
+        public async Task<CategoryResponseDto> Update(Guid id, CategoryRequestDto categoryDto)
         {
             var httpClient = _httpClientFactory.CreateClient("Shop.Api");
 
@@ -116,6 +116,24 @@ namespace Shop.Blazor.Services.Api.Implementation
                 }
                 return category;
             }
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            var httpClient = _httpClientFactory.CreateClient("Shop.Api");
+
+            using (var response = await httpClient.DeleteAsync(apiEndpoint + id))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException();
+                }
+            }
+            return false;
         }
     }
 }

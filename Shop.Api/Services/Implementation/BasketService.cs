@@ -82,5 +82,13 @@ namespace Shop.Api.Services.Implementation
             }
 
         }
+
+        public void ClearBasket()
+        {
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("basket", JsonConvert.SerializeObject(new Basket()), new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(7) 
+            });
+        }
     }
 }

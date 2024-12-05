@@ -31,7 +31,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        var categoryResponse = await _categoryService.GetCategory(categoryId);
+        var categoryResponse = await _categoryService.GetById(categoryId);
 
         category = new CategoryRequestDto
         {
@@ -41,7 +41,7 @@
 
     async Task EditCategory()
     {
-        await _categoryService.UpdateCategory(categoryId, category);
+        await _categoryService.Update(categoryId, category);
         navigation.NavigateTo("categories");
     }
 }

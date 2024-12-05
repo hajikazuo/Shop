@@ -28,7 +28,7 @@
 
     async Task CreateCategory()
     {
-        await _categoryService.CreateCategory(category);
+        await _categoryService.Create(category);
         navigation.NavigateTo("categories");
     }
 }
