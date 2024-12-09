@@ -1,21 +1,22 @@
-﻿@page "/categories/create"
+﻿@page "/products/create"
 @using Shop.Common.Models.DTO.Category
+@using Shop.Common.Models.DTO.Product
 @inject NavigationManager navigation
 
-@inject ICategoryService _categoryService
+@inject IProductService _productService
 
 <div class="container-xl">
     <div class="row row-cards">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Cadastrar categoria</h4>
+                    <h4 class="card-title">Cadastrar produto</h4>
                 </div>
 
-                <CategoryForm Category="@category" OnValidSubmit="Create"
+                <ProductForm Product="@product" OnValidSubmit="Create"
                               ButtonTextCancel="Cancelar"
                               ButtonTextSubmit="Salvar">
-                </CategoryForm>
+                </ProductForm>
 
             </div>
         </div>
@@ -24,11 +25,11 @@
 
 
 @code {
-    private CategoryRequestDto category = new CategoryRequestDto();
+    private ProductRequestDto product = new ProductRequestDto();
 
     async Task Create()
     {
-        await _categoryService.Create(category);
-        navigation.NavigateTo("categories");
+        await _productService.Create(product);
+        navigation.NavigateTo("products");
     }
 }

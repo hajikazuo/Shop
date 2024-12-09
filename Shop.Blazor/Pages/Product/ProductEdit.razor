@@ -1,0 +1,52 @@
+﻿@page "/product/edit/{productId:guid}"
+@using Shop.Common.Models.DTO.Product
+@inject NavigationManager navigation
+
+@inject IProductService _productService
+
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Editar produto</h4>
+                </div>
+
+                <ProductForm Product="@product" OnValidSubmit="Edit"
+                             ButtonTextCancel="Cancelar"
+                             ButtonTextSubmit="Salvar">
+                </ProductForm>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private ProductRequestDto product = new ProductRequestDto();
+
+    [Parameter]
+    public Guid productId { get; set; }
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var response = await _productService.GetById(productId);
+
+        product = new ProductRequestDto
+        {
+            Name = response.Name,
+            Price = response.Price,
+            Description = response.Description,
+            Stock = response.Stock,
+            ImageURL = response.ImageURL,
+            CategoryId = response.CategoryId
+        };
+    }
+
+    async Task Edit()
+    {
+        await _productService.Update(productId, product);
+        navigation.NavigateTo("products");
+    }
+}

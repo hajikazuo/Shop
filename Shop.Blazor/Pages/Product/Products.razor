@@ -1,5 +1,120 @@
-﻿<h3>Products</h3>
+﻿@page "/products"
+@using Shop.Common.Models.DTO.Product
+@inject IProductService _productService
+@inject NavigationManager NavigationManager
+
+<div class="container-xl">
+    <div class="mb-3">
+        <a href="/products/create" class="btn btn-primary d-none d-sm-inline-block">
+            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+            Cadastrar
+        </a>
+    </div>
+    <div class="row row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Produtos</h4>
+                </div>
+                <div class="card-body">
+                    @if (products is not null)
+                    {
+                        <div id="table-default" class="table-responsive">
+                            <table class="table table-vcenter card-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Id
+                                        </th>
+                                        <th>
+                                            Nome
+                                        </th>
+                                        <th>
+                                            Preço
+                                        </th>
+                                        <th>
+                                            Estoque
+                                        </th>
+                                        <th>
+                                            Categoria
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in products)
+                                    {
+                                        <tr>
+                                            <td>@item.ProductId</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.Stock</td>
+                                            <td>@item.Category.Name</td>
+                                            <td>
+                                                <div class="btn-list flex-column-nowrap">
+                                                    <a href="product/edit/@item.ProductId" class="btn">Editar</a>
+                                                    <a class="btn" @onclick="@(()=> Delete(item.ProductId))">Deletar</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<Modal @ref="confirm" onCancel="CancelConfirm" onConfirm="DeleteConfirm">
+    <div>Deseja realmente excluir este item ?</div>
+</Modal>
 
 @code {
+    private IEnumerable<ProductResponseDto> products =
+                       new List<ProductResponseDto>();
 
+    Modal? confirm;
+
+    Guid productCode;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            products = await _productService.GetAll();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            NavigationManager.NavigateTo("login");
+        }
+    }
+
+    void Delete(Guid productId)
+    {
+        confirm.Show();
+        productCode = productId;
+    }
+
+    void CancelConfirm()
+    {
+        confirm.Hide();
+    }
+
+    async Task DeleteConfirm()
+    {
+        try
+        {
+            await _productService.Delete(productCode);
+            products = await _productService.GetAll();
+            confirm.Hide();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            NavigationManager.NavigateTo("notauthorized");
+        }
+    }
 }

@@ -9,10 +9,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Cadastrar categoria</h4>
+                    <h4 class="card-title">Editar categoria</h4>
                 </div>
 
-                <CategoryForm Category="@category" OnValidSubmit="EditCategory"
+                <CategoryForm Category="@category" OnValidSubmit="Edit"
                               ButtonTextCancel="Cancelar"
                               ButtonTextSubmit="Salvar">
                 </CategoryForm>
@@ -31,15 +31,15 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        var categoryResponse = await _categoryService.GetById(categoryId);
+        var response = await _categoryService.GetById(categoryId);
 
         category = new CategoryRequestDto
         {
-           Name = categoryResponse.Name
+           Name = response.Name
         };
     }
 
-    async Task EditCategory()
+    async Task Edit()
     {
         await _categoryService.Update(categoryId, category);
         navigation.NavigateTo("categories");

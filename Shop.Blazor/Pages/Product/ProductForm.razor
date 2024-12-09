@@ -1,0 +1,104 @@
+﻿@using Shop.Common.Models.DTO.Category
+@using Shop.Common.Models.DTO.Product
+
+<EditForm Model="@Product" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="card-body">
+        <div class="row g-5">
+            <div class="col-md-4 mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <InputText id="name" @bind-Value="Product.Name" class="form-control" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="price" class="form-label">Preço</label>
+                <InputNumber id="price" @bind-Value="Product.Price" class="form-control" />
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="stock" class="form-label">Estoque</label>
+                <InputNumber id="stock" @bind-Value="Product.Stock" class="form-control" />
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="description" class="form-label">Descrição</label>
+                <InputTextArea id="description" @bind-Value="Product.Description" class="form-control" />
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                <label for="imageUrl" class="form-label">Imagem</label>
+                <InputText id="imageUrl" @bind-Value="Product.ImageURL" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">Categoria</label>
+                <select @onchange="CategorySelectionChanged" class="form-select">
+                    @if (categories != null)
+                    {
+                        @foreach (var item in categories)
+                        {
+                            <option value="@item.CategoryId"
+                                    selected="@(item.CategoryId == Product.CategoryId ? true : false)">
+                                @item.Name
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-end">
+        <div class="d-flex">
+            <button type="submit" class="btn btn-primary">
+                @ButtonTextSubmit
+            </button>
+            <button class="btn btn-link"
+                    @onclick="@(()=> navigation.NavigateTo("Products"))">
+                @ButtonTextCancel
+            </button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    List<CategoryResponseDto>? categories;
+
+    [Inject]
+    private NavigationManager? navigation { get; set; }
+
+    [Inject]
+    private ICategoryService? _categoryService { get; set; }
+
+    [Parameter]
+    public ProductRequestDto? Product { get; set; }
+
+    [Parameter]
+    public string ButtonTextSubmit { get; set; } = "Salvar";
+
+    [Parameter]
+    public string ButtonTextCancel { get; set; } = "Cancelar";
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await LoadCategories();
+        if (Product.CategoryId == Guid.Empty)  
+        {
+            Product.CategoryId = categories[0].CategoryId; 
+        }
+    }
+
+    private async Task<IEnumerable<CategoryResponseDto>> LoadCategories()
+    {
+        categories = await _categoryService.GetAll();
+        return categories;
+    }
+
+    void CategorySelectionChanged(ChangeEventArgs e)
+    {
+        if (Guid.TryParse(e.Value.ToString(), out Guid id))  
+        {
+            Product.CategoryId = id;  
+        }
+    }
+
+}

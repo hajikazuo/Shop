@@ -1,38 +1,38 @@
 ﻿using Shop.Blazor.Services.Api.Interface;
 using Shop.Common.Models.DTO.Category;
+using Shop.Common.Models.DTO.Product;
 using Shop.Common.Models.Entities;
-using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text;
 using System.Net;
-using System;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 
 namespace Shop.Blazor.Services.Api.Implementation
 {
-    public class CategoryService : ICategoryService
+    public class ProductService : IProductService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public ILogger<CategoryService> _logger;
-        private const string apiEndpoint = "/api/categories/";
+        public ILogger<ProductService> _logger;
+        private const string apiEndpoint = "/api/products/";
         private readonly JsonSerializerOptions _options;
 
-        private CategoryResponseDto? category;
-        private IEnumerable<CategoryResponseDto>? categories;
+        private ProductResponseDto? product;
+        private IEnumerable<ProductResponseDto>? products;
 
-        public CategoryService(IHttpClientFactory httpClientFactory,
-            ILogger<CategoryService> logger)
+        public ProductService(IHttpClientFactory httpClientFactory,
+            ILogger<ProductService> logger)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
             _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
-        public async Task<List<CategoryResponseDto>> GetAll()
+        public async Task<List<ProductResponseDto>> GetAll()
         {
             var httpClient = _httpClientFactory.CreateClient("Shop.Api");
             try
-            {
-                return await httpClient.GetFromJsonAsync<List<CategoryResponseDto>>(apiEndpoint);
+            {            
+                return await httpClient.GetFromJsonAsync<List<ProductResponseDto>>(apiEndpoint);
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Shop.Blazor.Services.Api.Implementation
             }
         }
 
-        public async Task<CategoryResponseDto> GetById(Guid id)
+        public async Task<ProductResponseDto> GetById(Guid id)
         {
             var httpClient = _httpClientFactory.CreateClient("Shop.Api");
             var response = await httpClient.GetAsync(apiEndpoint + id);
@@ -53,13 +53,13 @@ namespace Shop.Blazor.Services.Api.Implementation
                 throw new Exception($"Status Code : {response.StatusCode} - {message}");
             }
 
-            return await response.Content.ReadFromJsonAsync<CategoryResponseDto>();
+            return await response.Content.ReadFromJsonAsync<ProductResponseDto>();
         }
 
-        public async Task<CategoryResponseDto> Create(CategoryRequestDto categoryDto)
+        public async Task<ProductResponseDto> Create(ProductRequestDto productDto)
         {
             var httpClient = _httpClientFactory.CreateClient("Shop.Api");
-            var content = new StringContent(JsonSerializer.Serialize(categoryDto), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(productDto), Encoding.UTF8, "application/json");
 
             var response = await httpClient.PostAsync(apiEndpoint, content);
 
@@ -73,14 +73,15 @@ namespace Shop.Blazor.Services.Api.Implementation
             }
 
             var apiResponse = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<CategoryResponseDto>(apiResponse, _options);
+            return await JsonSerializer.DeserializeAsync<ProductResponseDto>(apiResponse, _options);
         }
 
-        public async Task<CategoryResponseDto> Update(Guid id, CategoryRequestDto categoryDto)
-        {
-            var httpClient = _httpClientFactory.CreateClient("Shop.Api");
 
-            var response = await httpClient.PutAsJsonAsync(apiEndpoint + id, categoryDto);
+        public async Task<ProductResponseDto> Update(Guid id, ProductRequestDto productDto)
+        {
+            var httpClient = _httpClientFactory.CreateClient("Shop.Api");   
+
+            var response = await httpClient.PutAsJsonAsync(apiEndpoint + id, productDto);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -92,9 +93,8 @@ namespace Shop.Blazor.Services.Api.Implementation
             }
 
             var apiResponse = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<CategoryResponseDto>(apiResponse, _options);
+            return await JsonSerializer.DeserializeAsync<ProductResponseDto>(apiResponse, _options);
         }
-
 
         public async Task<bool> Delete(Guid id)
         {
