@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RT.Comb;
+using Shop.Api.Repositories.Interfaces;
 using Shop.Api.Services.Interface;
 using Shop.Common.Context;
 using Shop.Common.Models.DTO.Product;
@@ -15,45 +16,28 @@ namespace Shop.Api.Controllers
     {
         private readonly ICombProvider _comb;
         private readonly IBasketService _basketService;
-        private readonly AppDbContext _context;
+        private readonly IOrderRepository _orderRepository;
 
-        public OrderController(ICombProvider comb, IBasketService basketService, AppDbContext context)
+        public OrderController(ICombProvider comb, IBasketService basketService,IOrderRepository orderRepository, AppDbContext context)
         {
             _comb = comb;
             _basketService = basketService;
-            _context = context;
+            _orderRepository = orderRepository;   
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateOrder(Guid UserId)
         {
-            var order = new Order
-            {
-                OrderId = _comb.Create(),
-                UserId = UserId,
-                OrderDate = DateTime.Now,
-            };
-
             var basket = _basketService.GetBasket();
-            
 
-            foreach(var item in basket.Items)
+            if (basket.Items.Count == 0)
             {
-                var orderItem = new OrderItem
-                {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    Price = item.Product.Price
-                };
-
-                order.OrderItems.Add(orderItem);
+                return BadRequest("Basket is empty");
             }
 
-            order.TotalAmount = basket.Total;
+            var orderId = _comb.Create();                   
 
-            await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
-
+            var order = await _orderRepository.CreateOrderAsync(UserId, basket, orderId);
             _basketService.ClearBasket();
 
             return Ok(order);

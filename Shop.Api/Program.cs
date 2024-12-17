@@ -69,11 +69,12 @@ namespace Shop.Api
             });
 
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
-            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();          
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             builder.Services.AddScoped<IBasketService, BasketService>();
             builder.Services.AddScoped<ISeedService, SeedService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddSingleton(RT.Comb.Provider.Sql);
             builder.Services.AddAutoMapper(typeof(MappingProfile));
