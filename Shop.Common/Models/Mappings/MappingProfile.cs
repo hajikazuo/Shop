@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Shop.Common.Models.DTO.Category;
+using Shop.Common.Models.DTO.Image;
 using Shop.Common.Models.DTO.Product;
 using Shop.Common.Models.Entities;
 using System;
@@ -25,6 +26,8 @@ namespace Shop.Common.Models.Mappings
                 .ForMember(dest => dest.Category, opt => opt.Ignore());
 
             CreateMap<ProductRequestDto, Product>().ReverseMap();
+
+            CreateMap<Image, ImageDto>().ReverseMap();
         }
     }
 }
